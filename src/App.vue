@@ -1,28 +1,38 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+	<div id="app">
+		<div class="controls border-b border-black ">
+			<input
+				type="search"
+				name="search"
+				placeholder="Search Icons"
+				id="search"
+				class="border border-black px-4 py-1"
+			/>
+			<select
+				name="color"
+				id="color "
+				class="border border-black px-4 py-1"
+			>
+				<option
+					v-for="color in colorOptions"
+					:key="color.value"
+					:value="color.value"
+				>
+					{{ color.name }}
+				</option>
+			</select>
+		</div>
+	</div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+	data: function() {
+		return {
+			colorOptions: [{ name: 'SMB Light Blue', value: '#0000ff' }],
+		};
+	},
+};
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<style></style>
