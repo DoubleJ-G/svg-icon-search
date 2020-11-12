@@ -1,36 +1,125 @@
 <template>
-	<div id="app">
-		<div class="controls border-b border-black ">
+	<div id="app" class="w-1/2 mx-auto mt-8">
+		<div class="flex ">
 			<input
-				type="search"
-				name="search"
-				placeholder="Search Icons"
-				id="search"
-				class="border border-black px-4 py-1"
+				type="text"
+				class="h-12 w-full block p-4 mx-auto border border-black"
+				v-model="search"
+				@input="runSearch"
 			/>
 			<select
-				name="color"
-				id="color "
-				class="border border-black px-4 py-1"
+				type="text"
+				class="h-12 w-25 block px-4 mx-auto border border-black"
+				v-model="size"
 			>
 				<option
-					v-for="color in colorOptions"
-					:key="color.value"
-					:value="color.value"
+					v-for="px in 20"
+					:key="px"
+					:value="100 + px * 25 + 'px'"
+					>{{ 100 + px * 25 + 'px' }}</option
 				>
-					{{ color.name }}
-				</option>
 			</select>
+		</div>
+
+		<ColorPicker :value="color" @color="color = $event" />
+		<div class="w-full h-1/2 border-t mt-4 flex flex-wrap">
+			<div
+				v-for="svg in results"
+				:key="svg.path"
+				class="m-2 cursor-pointer"
+			>
+				<div>
+					<div @click="copy($event)">
+						<InlineSvg
+							:src="require('./assets/svgs/RETAIL.svg')"
+							:width="size"
+							:height="size"
+							:fill="color"
+						/>
+					</div>
+
+					<div class="mx-auto w-3/4 text-center text-xl ">
+						{{
+							titleCase(
+								/img\/([^\.]*)/.exec(svg.path)[1].toLowerCase()
+							)
+						}}
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+import ColorPicker from './components/ColorPicker';
+import InlineSvg from 'vue-inline-svg';
+
 export default {
+	components: {
+		ColorPicker,
+		InlineSvg,
+	},
 	data: function() {
 		return {
-			colorOptions: [{ name: 'SMB Light Blue', value: '#0000ff' }],
+			color: '#000000',
+			svgs: [],
+			results: [],
+			size: '200px',
+			search: '',
 		};
+	},
+	methods: {
+		outerHTML(node) {
+			return (
+				node.outerHTML || new XMLSerializer().serializeToString(node)
+			);
+		},
+		copy(el) {
+			const svg = el.target.closest('svg');
+			this.copyToClipboard(this.outerHTML(svg));
+		},
+		copyToClipboard(text) {
+			if (navigator.clipboard) {
+				// default: modern asynchronous API
+				return navigator.clipboard.writeText(text);
+			} else if (window.clipboardData && window.clipboardData.setData) {
+				// for IE11
+				window.clipboardData.setData('Text', text);
+				return Promise.resolve();
+			} else {
+				// workaround: create dummy input
+				var input = document.createElement('INPUT');
+				input.setAttribute('type', 'text');
+				input.value = text;
+				document.body.append(input);
+				input.focus();
+				input.select();
+				document.execCommand('copy');
+				input.remove();
+				return Promise.resolve();
+			}
+		},
+		runSearch() {
+			console.log('Searching: ', this.search);
+			this.results = this.svgs.filter((svg) =>
+				svg.path.toLowerCase().includes(this.search.toLowerCase())
+			);
+		},
+		titleCase(str) {
+			return str
+				.split(' ')
+				.map((s) => s.replace(s.charAt(0), s.charAt(0).toUpperCase()))
+				.join(' ');
+		},
+	},
+	mounted() {
+		const data = require.context('./assets/svgs/', true, /\.svg$/);
+		data.keys().forEach((key) => {
+			this.svgs.push({ path: './assets/svgs' + data(key) });
+		});
+		console.log(this.svgs);
+		this.runSearch();
 	},
 };
 </script>
