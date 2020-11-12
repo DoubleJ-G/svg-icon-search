@@ -31,7 +31,13 @@
 				<div>
 					<div @click="copy($event)">
 						<InlineSvg
-							:src="require('./assets/svgs/RETAIL.svg')"
+							:src="
+								require('./assets/svgs/' +
+									/img\/([^\.]*)/
+										.exec(svg.path)[1]
+										.replace('img/', '') +
+									'.svg')
+							"
 							:width="size"
 							:height="size"
 							:fill="color"
