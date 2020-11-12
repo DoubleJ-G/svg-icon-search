@@ -1,6 +1,6 @@
 <template>
 	<div id="app" class="w-1/2 mx-auto mt-8">
-		<div class="flex ">
+		<div class="flex">
 			<input
 				type="text"
 				class="h-12 w-full block p-4 mx-auto border border-black"
@@ -22,7 +22,7 @@
 		</div>
 
 		<ColorPicker :value="color" @color="color = $event" />
-		<div class="w-full h-1/2 border-t mt-4 flex flex-wrap">
+		<div class="w-full h-1/2 border-t mt-4 flex flex-wrap justify-between">
 			<div
 				v-for="svg in results"
 				:key="svg.path"
