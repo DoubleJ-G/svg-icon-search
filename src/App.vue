@@ -13,10 +13,10 @@
 				v-model="size"
 			>
 				<option
-					v-for="px in 20"
+					v-for="px in 21"
 					:key="px"
-					:value="100 + px * 25 + 'px'"
-					>{{ 100 + px * 25 + 'px' }}</option
+					:value="75 + px * 25 + 'px'"
+					>{{ 75 + px * 25 + 'px' }}</option
 				>
 			</select>
 		</div>
