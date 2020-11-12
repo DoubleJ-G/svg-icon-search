@@ -22,14 +22,18 @@
 		</div>
 
 		<ColorPicker :value="color" @color="color = $event" />
-		<div class="w-full h-1/2 border-t mt-4 flex flex-wrap justify-between">
+		<div class="w-full h-1/2 border-t mt-4 flex flex-wrap justify-center">
 			<div
 				v-for="svg in results"
 				:key="svg.path"
-				class="m-2 cursor-pointer"
+				class="m-2 cursor-pointer mx-auto"
 			>
 				<div>
-					<div @click="copy($event)">
+					<div
+						@click="copy($event)"
+						class="flex items-center justify-center flex-col"
+						:style="{ width: size, height: size }"
+					>
 						<InlineSvg
 							:src="
 								require('./assets/svgs/' +
@@ -38,8 +42,8 @@
 										.replace('img/', '') +
 									'.svg')
 							"
-							:width="size"
-							:height="size"
+							:width="w - full"
+							:height="h - full"
 							:fill="color"
 						/>
 					</div>
