@@ -31,8 +31,8 @@
 				<div>
 					<div
 						@click="copy($event)"
-						class="flex items-center justify-center flex-col"
-						:style="{ width: size, height: size }"
+						class="flex items-center justify-center flex-col fill"
+						:style="{ width: size, height: size, color: color }"
 					>
 						<InlineSvg
 							:src="
@@ -42,7 +42,7 @@
 										.replace('img/', '') +
 									'.svg')
 							"
-							:fill="color"
+							fill="currentColor"
 						/>
 					</div>
 
@@ -120,6 +120,11 @@ export default {
 				.join(' ');
 		},
 	},
+	computed: {
+		css() {
+			return `.fill svg { fill: ${this.color} }`;
+		},
+	},
 	mounted() {
 		const data = require.context('./assets/svgs/', true, /\.svg$/);
 		data.keys().forEach((key) => {
@@ -129,5 +134,3 @@ export default {
 	},
 };
 </script>
-
-<style></style>
