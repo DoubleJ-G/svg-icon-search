@@ -42,8 +42,6 @@
 										.replace('img/', '') +
 									'.svg')
 							"
-							:width="w - full"
-							:height="h - full"
 							:fill="color"
 						/>
 					</div>
@@ -111,7 +109,6 @@ export default {
 			}
 		},
 		runSearch() {
-			console.log('Searching: ', this.search);
 			this.results = this.svgs.filter((svg) =>
 				svg.path.toLowerCase().includes(this.search.toLowerCase())
 			);
@@ -128,7 +125,6 @@ export default {
 		data.keys().forEach((key) => {
 			this.svgs.push({ path: './assets/svgs' + data(key) });
 		});
-		console.log(this.svgs);
 		this.runSearch();
 	},
 };
